@@ -127,6 +127,43 @@ Important topics for interview in MVC, WebAPI, C#, Azure SR
   - k.       Areas
   - l.       Cookies
   - m.       Value Provider / Custom Value Provider
+  - n.       module
+              
+    Create a class library project and impliment "IHttpModule"            
+              
+              public class LogginHttpModule : IHttpModule
+              {
+                  public void Dispose()
+                  {
+
+                  }
+
+                  public void Init(HttpApplication context)
+                  {
+                      context.LogRequest += Context_LogRequest;
+                  }
+
+                  private void Context_LogRequest(object sender, EventArgs e)
+                  {
+                      HttpApplication application = (HttpApplication)sender;
+                      HttpContext context = application.Context;
+
+                      string requestPath = context.Request.Path;
+
+                      Trace.WriteLine(String.Format("Request Path: {0}",requestPath));
+
+                  }
+              } 
+              
+      Add Class library project reference in MVC project.
+      Also add the below line in web.config        
+              
+              <system.webServer>
+                <modules>
+                  <add name="LogginHttpModule" type="CustomHttpModule.LogginHttpModule, CustomHttpModule"/>
+                </modules>
+              </system.webServer>
+            
 
 ## 2.       Web API
 
