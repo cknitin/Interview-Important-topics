@@ -218,11 +218,38 @@ Important topics for interview in MVC, WebAPI, C#, Azure SR
         
   or in side the "AssemblyInfo.cs"
   
-  [assembly: PreApplicationStartMethod(typeof(PreApplicationStartup), "Initialize")]
+    [assembly: PreApplicationStartMethod(typeof(PreApplicationStartup), "Initialize")]
   
   Now add the project reference in MVC project
 
-  
+ - q. ActionFilterAttribute
+ 
+ Add a file with the name "CustomFilter" in the MVC project
+ 
+    public class CustomFilter : ActionFilterAttribute
+    {
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            string controllerName =filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
+            string actionName = filterContext.ActionDescriptor.ActionName;
+            Trace.Write(string.Format("OnActionExecuting : {0}, {1}", controllerName, actionName));
+        }
+
+        public override void OnActionExecuted(ActionExecutedContext filterContext)
+        {
+            string controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
+            string actionName = filterContext.ActionDescriptor.ActionName;
+            Trace.Write(string.Format("OnActionExecuted : {0}, {1}", controllerName, actionName));
+        }
+    }
+    
+    [CustomFilter]
+    public class HomeController : Controller
+    {
+    
+    }
+    
+ 
 
 ## 2.       Web API
 
