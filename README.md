@@ -11,6 +11,115 @@ Important topics for interview in MVC, WebAPI, C#, Azure SR
   - f.       Authentication
   - g.       Security implementation
   - h.       Exception handling
+             - 1. try/catch
+             
+                  public ActionResult Index()
+                  {
+                      try
+                      {
+                          int a = 1;
+                          int b = 0;
+                          int c = 0;
+                          c = a / b; //it would cause exception. 
+
+                          return View();
+                      }
+                      catch
+                      {
+                          Trace.Write("Error");
+
+                          return View("Error");
+                      }
+                  }
+                  
+             - 2. In web.config
+                  <system.web>
+                    <customErrors mode="On" defaultRedirect="~/ErrorHandler/Index">
+                        <error statusCode="404" redirect="~/ErrorHandler/NotFound"/>
+                    </customErrors>
+                  </system.web>
+                               
+             - 3. using [HandleError] attribute
+             
+                  [HandleError(ExceptionType = typeof(DivideByZeroException), View = "~/Views/CommonExceptionView.cshtml")]
+                  public ActionResult Contact()
+                  {
+                      int a = 1;
+                      int b = 0;
+                      int c = 0;
+                      c = a / b; //it would cause exception.    
+                      return View();
+                  }
+             
+             - 4. Overriding OnException() method of controller base class
+             
+                  public class HomeController : Controller
+                  {
+                      public ActionResult Index()
+                      {
+                          return View();
+                      }
+
+                      protected override void OnException(ExceptionContext filterContext)
+                      {
+                          filterContext.ExceptionHandled = true;
+
+                          //Log the error!!
+                          Trace.Write(filterContext.Exception);
+
+                          //Redirect or return a view, but not both.
+                          filterContext.Result = RedirectToAction("Index", "ErrorHandler");
+                          // OR 
+                          filterContext.Result = new ViewResult
+                          {
+                              ViewName = "~/Views/ErrorHandler/Index.cshtml"
+                          };
+                      }
+                  }
+                  
+             - 5. HandleErrorAttribute by create action filter class
+                  
+                  [CustomErrorHandling]
+                  public ActionResult About()
+                  {
+                      int a = 1;
+                      int b = 0;
+                      int c = 0;
+                      c = a / b; //it would cause exception.    
+
+                      ViewBag.Message = "Your application description page.";
+
+                      return View();
+                  }
+                  
+                  public class CustomErrorHandling : HandleErrorAttribute
+                  {
+                      public override void OnException(ExceptionContext filterContext)
+                      {
+                          if (filterContext.ExceptionHandled || filterContext.HttpContext.IsCustomErrorEnabled)
+                          {
+                              return;
+                          }
+                          Exception e = filterContext.Exception;
+                          filterContext.ExceptionHandled = true;
+                          filterContext.Result = new ViewResult()
+                          {
+                              ViewName = "~/Views/CommonExceptionView.cshtml"
+                          };
+                      }
+
+                  }
+
+             
+             - 6. Application_Error() using Global.asax page.
+                  
+                  protected void Application_Error()
+                  {
+                      var ex = Server.GetLastError();
+                      //log the error!
+                      Trace.Write(ex);
+                  }
+  
   - i.       Caching
   - j.       Validations
   - k.       Areas
