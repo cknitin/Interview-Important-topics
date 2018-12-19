@@ -155,11 +155,12 @@ Important topics for interview in MVC, WebAPI, C#, Azure SR
             } 
             
  Add Class library project reference in MVC project. Also add the below line in web.config            
-            <system.webServer>
-              <handlers>
-                <add name="RssHandler" verb="*" path="*.rss" type="CustomHttpHandler.RssHandler, CustomHttpHandler"/>
-              </handlers>
-            </system.webServer>
+                
+                <system.webServer>
+                  <handlers>
+                    <add name="RssHandler" verb="*" path="*.rss" type="CustomHttpHandler.RssHandler, CustomHttpHandler"/>
+                  </handlers>
+                </system.webServer>
   
   - o.       module
               
