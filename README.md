@@ -34,6 +34,7 @@ Important topics for interview in MVC, WebAPI, C#, Azure SR
                   }
                   
     - 2. In web.config
+                  
                   <system.web>
                     <customErrors mode="On" defaultRedirect="~/ErrorHandler/Index">
                         <error statusCode="404" redirect="~/ErrorHandler/NotFound"/>
