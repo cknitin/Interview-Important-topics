@@ -127,7 +127,41 @@ Important topics for interview in MVC, WebAPI, C#, Azure SR
   - k.       Areas
   - l.       Cookies
   - m.       Value Provider / Custom Value Provider
-  - n.       module
+  - n.       handler
+  
+   Create a class library project and impliment "IHttpHandler"    
+            public class RssHandler : IHttpHandler
+            {
+                public bool IsReusable
+                {
+                    get
+                    {
+                        return false;
+                    }
+                }
+
+                public void ProcessRequest(HttpContext context)
+                {
+                    context.Response.ContentType = "text/html";
+
+                    using (XmlWriter writer = XmlWriter.Create(context.Response.OutputStream))
+                    {
+                        writer.WriteStartDocument();
+                        writer.WriteElementString("rss", "This is test feed.");
+                        writer.WriteEndDocument();
+                        writer.Flush();
+                    }
+                }
+            } 
+            
+ Add Class library project reference in MVC project. Also add the below line in web.config            
+            <system.webServer>
+              <handlers>
+                <add name="RssHandler" verb="*" path="*.rss" type="CustomHttpHandler.RssHandler, CustomHttpHandler"/>
+              </handlers>
+            </system.webServer>
+  
+  - o.       module
               
     Create a class library project and impliment "IHttpModule"            
               
