@@ -198,7 +198,31 @@ Important topics for interview in MVC, WebAPI, C#, Azure SR
                   <add name="LogginHttpModule" type="CustomHttpModule.LogginHttpModule, CustomHttpModule"/>
                 </modules>
               </system.webServer>
-            
+              
+  - p. PreApplicationStartMethod          
+  
+  This method will call before the Application_Start() method.
+  
+        [assembly: PreApplicationStartMethod(typeof(PreApplicationStartup), "Initialize")]
+        namespace PreApplicationStartMethodDemo
+        {
+            public class PreApplicationStartup
+            {
+
+                public static void Initialize()
+                {
+
+                }
+            }
+        }
+        
+  or in side the "AssemblyInfo.cs"
+  
+  [assembly: PreApplicationStartMethod(typeof(PreApplicationStartup), "Initialize")]
+  
+  Now add the project reference in MVC project
+
+  
 
 ## 2.       Web API
 
