@@ -14,6 +14,8 @@ Important topics for interview in MVC, WebAPI, C#, Azure SR
   - i.       Caching
   - j.       Validations
   - k.       Areas
+  - l.       Cookies
+  - m.       Value Provider / Custom Value Provider
 
 ## 2.       Web API
 
